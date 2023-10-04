@@ -13,6 +13,14 @@
   }
 }
 
+/* Add this CSS to your component or a separate CSS file */
+.fixed-button-container {
+  position: sticky;
+  top: 0;
+  background-color: white; /* Optional: Set the background color */
+  z-index: 1;
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
