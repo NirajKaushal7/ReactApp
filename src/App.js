@@ -17,12 +17,17 @@ function App() {
     <div className="App">
       {/* <ItemManager/> */}
       {/* <StudentManager1/> */}
+      {/* BrowserRouter is used to wrap your application and provide routing functionality. */}
       <BrowserRouter>
+      {/* Routes component acts as a container for defining your application's routes. */}
     <Routes>
+    {/* / root path or index path*/}
       <Route path='/' element={ <Home /> } />
+      {/* When the URL matches this paths, the associated component will be rendered. */}
       <Route path="/addStudent" element={<AddStudent />}/>
       <Route path="/students" element={<StudentManager3 />}/>
       <Route path="/books/:studentId" element={<BookManager />}/>
+      {/* studentId is a dynamic parameter in the URL. */}
       <Route path="/addBook/:studentId" element={<AddBook/>}/>
     </Routes>
    </BrowserRouter>
@@ -31,25 +36,4 @@ function App() {
 }
 
 export default App;
-
-
-// import React from 'react';
-// import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-// import StudentManager from './StudentManager';
-// import AddStudent from './AddStudent';
-// import EditStudent from './EditStudent';
-
-// function App() {
-//   return (
-//     <Router>
-      // <Switch>
-      //   <Route path="/" exact component={StudentManager} />
-      //   <Route path="/add" component={AddStudent} />
-      //   <Route path="/edit/:id" component={EditStudent} />
-      // </Switch>
-//     </Router>
-//   );
-// }
-
-// export default App;
 

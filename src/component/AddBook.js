@@ -10,27 +10,32 @@ const AddBook = () => {
   const [book, setBook] = useState({ name: '', author: '' });
   const dispatch = useDispatch();
 
-  const handleAddBook = () => {
+  const handleAddBook = async () => {
     if (book.name.trim() === '' || book.author.trim() === '') {
       alert('Please fill the data correctly');
       return;
     }
+  
     const newBook = { ...book, student_id: studentId };
-    axios
-      .post(`http://localhost:8080/students/${studentId}/book`, newBook, {
+  
+    try {
+      const response = await axios.post(`http://localhost:8080/students/${studentId}/book`, newBook, {
         headers: {
           'Content-Type': 'application/json',
         },
-      })
-      .then((res) => {
-        newBook.id = res.data.id;
-        dispatch(addBook(newBook));
-        alert('Book added Successfully');
-      })
-      .catch((error) => console.log(error));
+      });
+  
+      newBook.id = response.data.id;
+      dispatch(addBook(newBook));
+      alert('Book added Successfully');
+    } catch (error) {
+      console.log(error);
+    }
+  
     setBook({ name: '', author: '' });
     navigate(`/books/${studentId}`);
   };
+  
 
   return (
     <div>

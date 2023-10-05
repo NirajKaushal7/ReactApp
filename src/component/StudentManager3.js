@@ -14,13 +14,18 @@ const StudentManager3 = () => {
   const dispatch = useDispatch(); //This hook gives access to the dispatch function, which is used to dispatch actions to the Redux store.
 
   useEffect(() => {
-    axios.get('http://localhost:8080/students')
-      .then(res => {
-        dispatch(setStudents(res.data)); // Dispatch the fetched data to Redux
-      })
-      .catch(error => console.log(error));
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/students');
+        dispatch(setStudents(response.data));//dispatched to redux store
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
   }, []);
-  
+
   const handleEditStudent = (selectedStudent) => {
     // Show a confirmation dialog before editing
       setEditingStudent(selectedStudent);
@@ -28,39 +33,39 @@ const StudentManager3 = () => {
     
   };
 
-  const handleUpdateStudent = (id) => {
+    const handleUpdateStudent = async (id) => {
     const confirmUpdate = window.confirm('Are you sure you want to update this student?');
     if (confirmUpdate) {
-    if (editingStudent.name.trim() === '' || editingStudent.email.trim() === '' || editingStudent.dob.trim() === '')
-    {
-      alert("Please fill the data correctly");
-      return;
-    }
-    axios.put('http://localhost:8080/students/' + id, editingStudent)
-      .then(res => {
-        const updatedStudent = { ...editingStudent }; // Create a new object
-        dispatch(updateStudent(updatedStudent)); // Dispatch the new object to Redux Store
-       // setEditId(-1);
+      if (editingStudent.name.trim() === '' || editingStudent.email.trim() === '' || editingStudent.dob.trim() === '') {
+        alert("Please fill the data correctly");
+        return;
+      }
+
+      try {
+        const response = await axios.put('http://localhost:8080/students/' + id, editingStudent);
+        const updatedStudent = { ...editingStudent };
+        dispatch(updateStudent(updatedStudent));
         setEditingStudent({ id: '', name: '', email: '', dob: '', books: [] });
         alert("Student updated Successfully");
-      })
-      .catch(error => console.log(error));
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
-  
-  const handleDeleteStudent = (id) => {
-    // Show a confirmation dialog before deleting
+
+  const handleDeleteStudent = async (id) => {
     const confirmDelete = window.confirm('Are you sure you want to delete this student?');
     if (confirmDelete) {
-      axios
-        .delete('http://localhost:8080/students/' + id)
-        .then((res) => {
-          dispatch(deleteStudent(id)); // It dispatches the deleteStudent action to remove the student from the Redux store.
-          alert('Student deleted Successfully');
-        })
-        .catch((error) => console.log(error));
+      try {
+        await axios.delete('http://localhost:8080/students/' + id);
+        dispatch(deleteStudent(id));
+        alert('Student deleted Successfully');
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
+
 
   return (
     

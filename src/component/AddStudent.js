@@ -10,28 +10,30 @@ const AddStudent = () => {
   const [student, setStudent] = useState({ name: '', email: '', dob: '' });
   const dispatch = useDispatch();
 
-  const handleAddStudent = () => {
-
-    if (student.name.trim() === '' || student.email.trim() === '' || student.dob.trim() === '')
-    {
+  const handleAddStudent = async () => {
+    if (student.name.trim() === '' || student.email.trim() === '' || student.dob.trim() === '') {
       alert("Please fill the data correctly");
       return;
     }
-    const newStudent = { ...student};
-    axios.post('http://localhost:8080/students', newStudent, 
-        {
+
+    const newStudent = { ...student };
+
+    try {
+      const response = await axios.post('http://localhost:8080/students', newStudent, {
         headers: {
           'Content-Type': 'application/json',
         },
-      })
-      .then(res => {
-        newStudent.id = res.data.id; // Set the id in the newStudent object
-        dispatch(addStudent(newStudent)); // Dispatch the added student to Redux
-        alert("Student added Successfully");
-      })
-      .catch(error => console.log(error));  
+      });
+
+      newStudent.id = response.data.id; // Set the id in the newStudent object
+      dispatch(addStudent(newStudent)); // Dispatch the added student to Redux
+      alert("Student added Successfully");
+    } catch (error) {
+      console.error(error);
+    }
+
     setStudent({ id: '', name: '', email: '', dob: '', books: [] });
-    navigate('/students')
+    navigate('/students');
   };
 
   return (
