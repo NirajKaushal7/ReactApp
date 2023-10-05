@@ -1,4 +1,5 @@
-
+//  Reducers are functions that specify how the application's state should change
+//  in response to actions this booksSlice.reducer returns booksReducer
 import { createSlice } from '@reduxjs/toolkit';
 
 const booksSlice = createSlice({

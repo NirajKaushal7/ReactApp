@@ -1,4 +1,6 @@
 
+//  Reducers are functions that specify how the application's state should change
+//  in response to actions. this studentsSlice.reducer returns studentsReducer
 import { createSlice } from '@reduxjs/toolkit';
 
 const studentsSlice = createSlice({
