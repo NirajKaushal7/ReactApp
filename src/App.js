@@ -1,12 +1,16 @@
 import logo from './logo.svg';
 import './App.css';
 import ItemManager from './ReduxCrudOnUI/ItemManager';
-// import StudentManager from './ReduxCrud/StudentManager';
 // import StudentManager1 from './component/StudentManager1';
-import StudentManager2 from './component/StudentManager2';
+// import StudentManager2 from './component/StudentManager2';
+import StudentManager3 from './component/StudentManager3';
 import AddStudent from './component/AddStudent';
+import AddBook from './component/AddBook';
+import Home from './component/Home';
 import { BrowserRouter,Routes,Route } from 'react-router-dom';
-
+// import 'bootstrap/dist/css/bootstrap.min.css';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import BookManager from './component/BookManager';
 
 function App() {
   return (
@@ -15,8 +19,11 @@ function App() {
       {/* <StudentManager1/> */}
       <BrowserRouter>
     <Routes>
-      <Route path='/' element={ <StudentManager2 /> } />
-      <Route path="/add" element={<AddStudent />}/>
+      <Route path='/' element={ <Home /> } />
+      <Route path="/addStudent" element={<AddStudent />}/>
+      <Route path="/students" element={<StudentManager3 />}/>
+      <Route path="/books/:studentId" element={<BookManager />}/>
+      <Route path="/addBook/:studentId" element={<AddBook/>}/>
     </Routes>
    </BrowserRouter>
        </div>

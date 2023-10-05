@@ -1,14 +1,13 @@
 
-
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateStudent, deleteStudent, setStudents } from '../slices/studentsSlice';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
 
-const StudentManager2 = () => {
+const StudentManager3 = () => {
   const [editingStudent, setEditingStudent] = useState({ id: '', name: '', email: '', dob: '', books: [] });
-  const [editId, setEditId] = useState(-1);
+  //const [editId, setEditId] = useState(-1);
 
   const students = useSelector(state => state.students); // This hook retrieves the students slice of the Redux store, providing access to the student data 
 
@@ -20,11 +19,12 @@ const StudentManager2 = () => {
         dispatch(setStudents(res.data)); // Dispatch the fetched data to Redux
       })
       .catch(error => console.log(error));
-  }, [dispatch]);
+  }, []);
+  
   const handleEditStudent = (selectedStudent) => {
     // Show a confirmation dialog before editing
       setEditingStudent(selectedStudent);
-      setEditId(selectedStudent.id);
+      //setEditId(selectedStudent.id);
     
   };
 
@@ -40,7 +40,8 @@ const StudentManager2 = () => {
       .then(res => {
         const updatedStudent = { ...editingStudent }; // Create a new object
         dispatch(updateStudent(updatedStudent)); // Dispatch the new object to Redux Store
-        setEditId(-1);
+       // setEditId(-1);
+        setEditingStudent({ id: '', name: '', email: '', dob: '', books: [] });
         alert("Student updated Successfully");
       })
       .catch(error => console.log(error));
@@ -64,9 +65,12 @@ const StudentManager2 = () => {
   return (
     
     <div>
-      <div className="fixed-button-container">
-      <h5>Student Manager</h5>
-      <Link to="/addStudent" className="btn btn-sm btn-info" >Add User</Link>      
+      <div className="fixed-button-container" style={{ textAlign: 'right' }} >
+        <div style={{ textAlign: 'center' }}>
+      <h5 >Student Manager</h5>
+      </div>
+      <Link to="/addStudent" className="btn btn-sm btn-info" >Add Student</Link>      
+      <Link to="/" className="btn btn-sm btn-primary" >Back</Link>    
           </div>
              {/* <br/><br/><br/> */}
 <table class="table table-bordered table-hover">
@@ -81,7 +85,7 @@ const StudentManager2 = () => {
           </thead>
           <tbody>
           {students.map((student) => (
-     editId === student.id ?   
+     editingStudent.id === student.id ?   
      <tr> 
      <td class="table-success">{student.id}</td>
               <td class="table-success"><input type="text"  value={editingStudent.name}
@@ -91,7 +95,7 @@ onChange={(eventObj) => setEditingStudent({ ...editingStudent, email: eventObj.t
               <td class="table-success"><input type="date"  value={editingStudent.dob}
 onChange={(eventObj) => setEditingStudent({ ...editingStudent, dob: eventObj.target.value })}></input></td>
               <button onClick={() => handleUpdateStudent(student.id)} class="btn btn-success">Update</button>
-              <button onClick={() => setEditId(-1)} className="btn btn-warning">Back</button>
+              <button onClick={() => setEditingStudent({ id: '', name: '', email: '', dob: '', books: [] })} className="btn btn-warning">Back</button>
             </tr>
               :
             <tr class="table-success" key={student.id}>
@@ -101,6 +105,9 @@ onChange={(eventObj) => setEditingStudent({ ...editingStudent, dob: eventObj.tar
               <td class="table-success">{student.dob}</td>
               <td class="table-success">
               {/* By using the anonymous function, you ensure that handleEdit Student is called only when the button is clicked */}
+              {/* <button onClick={() => handleBooks(student.id)} class ="btn btn-secondary">Books</button> */}
+              <Link to={`/addBook/${student.id}`}  className="btn btn-sm btn-info" >Add Book</Link> 
+              <Link to={`/books/${student.id}`}  className="btn btn-sm btn-warning" >Books</Link> 
                 <button onClick={() => handleEditStudent(student)} class ="btn btn-secondary">Edit</button>
                 <button onClick={() => handleDeleteStudent(student.id)} class ="btn btn-danger">Delete</button>
               </td>
@@ -113,4 +120,4 @@ onChange={(eventObj) => setEditingStudent({ ...editingStudent, dob: eventObj.tar
   );
 };
 
-export default StudentManager2;
+export default StudentManager3;

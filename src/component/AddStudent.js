@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { addStudent } from './studentsSlice';
+import { addStudent } from '../slices/studentsSlice';
 import {useNavigate} from "react-router-dom"
 import {Link} from "react-router-dom";
 const AddStudent = () => {
@@ -12,8 +12,11 @@ const AddStudent = () => {
 
   const handleAddStudent = () => {
 
-    if (student.name.trim() === '' || student.email.trim() === '' || student.dob.trim() === '') return;
-
+    if (student.name.trim() === '' || student.email.trim() === '' || student.dob.trim() === '')
+    {
+      alert("Please fill the data correctly");
+      return;
+    }
     const newStudent = { ...student};
     axios.post('http://localhost:8080/students', newStudent, 
         {
@@ -28,7 +31,7 @@ const AddStudent = () => {
       })
       .catch(error => console.log(error));  
     setStudent({ id: '', name: '', email: '', dob: '', books: [] });
-    navigate('/')
+    navigate('/students')
   };
 
   return (
@@ -39,15 +42,15 @@ const AddStudent = () => {
         placeholder="Name"
         value={student.name}
         onChange={(eventObj) => setStudent({ ...student, name: eventObj.target.value })}
-      />
+      /><br/>
       <input
         type="text"
         placeholder="Email"
         value={student.email}
         onChange={(eventObj) => setStudent({ ...student, email: eventObj.target.value })}
-      />
+      /><br/>
       <input
-        type="text"
+        type="date"
         placeholder="dob (YY-MM-DD)"
         value={student.dob}
         onChange={(eventObj) => setStudent({ ...student, dob: eventObj.target.value })}
