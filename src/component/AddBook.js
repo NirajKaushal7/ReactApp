@@ -38,7 +38,7 @@ const AddBook = () => {
     }
 
     setBook({ name: "", author: "" });
-    navigate(`/books/?id=${studentId}`);
+    navigate(`/books/${studentId}`);
     // navigate(`/books/?id=${studentId}`);//another way to pass data
   };
 
