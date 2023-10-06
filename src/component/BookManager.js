@@ -1,13 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { updateBook, deleteBook, setBooks } from '../slices/booksSlice'; // Import relevant actions and reducers for books
-import axios from 'axios';
-import { Link, useParams } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { updateBook, deleteBook, setBooks } from "../slices/booksSlice"; // Import relevant actions and reducers for books
+import axios from "axios";
+import { Link, useParams } from "react-router-dom";
 
 const BookManager = () => {
   const { studentId } = useParams();
-
-  const [editingBook, setEditingBook] = useState({ id: '', name: '', author: '', student_id: '' });
+  // when editingBook get modified then This state change triggers a re-render of component.
+  const [editingBook, setEditingBook] = useState({
+    id: "",
+    name: "",
+    author: "",
+    student_id: "",
+  });
 
   const books = useSelector((state) => state.books);
 
@@ -15,7 +20,9 @@ const BookManager = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/students/${studentId}/books`);
+      const response = await axios.get(
+        `http://localhost:8080/students/${studentId}/books`
+      );
       dispatch(setBooks(response.data));
     } catch (error) {
       console.log(error);
@@ -32,22 +39,27 @@ const BookManager = () => {
   };
 
   const handleUpdateBook = async (id) => {
-    const confirmUpdate = window.confirm('Are you sure you want to update this book?');
+    const confirmUpdate = window.confirm(
+      "Are you sure you want to update this book?"
+    );
     if (confirmUpdate) {
       if (
-        editingBook.name.trim() === '' ||
-        editingBook.author.trim() === '' ||
-        editingBook.student_id.trim() === ''
+        editingBook.name.trim() === "" ||
+        editingBook.author.trim() === "" ||
+        editingBook.student_id.trim() === ""
       ) {
-        alert('Please fill the data correctly');
+        alert("Please fill the data correctly");
         return;
       }
       try {
-        const res = await axios.put(`http://localhost:8080/students/book/${editingBook.id}`, editingBook);
+        const res = await axios.put(
+          `http://localhost:8080/students/book/${editingBook.id}`,
+          editingBook
+        );
         const updatedBook = { ...editingBook };
         dispatch(updateBook(updatedBook));
-        setEditingBook({ id: '', name: '', author: '', student_id: '' });
-        alert('Book updated Successfully');
+        setEditingBook({ id: "", name: "", author: "", student_id: "" });
+        alert("Book updated Successfully");
       } catch (error) {
         console.log(error);
       }
@@ -55,12 +67,16 @@ const BookManager = () => {
   };
 
   const handleDeleteBook = async (id) => {
-    const confirmDelete = window.confirm('Are you sure you want to delete this book?');
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this book?"
+    );
     if (confirmDelete) {
       try {
-        await axios.delete(`http://localhost:8080/students/${studentId}/books/${id}`);
-         dispatch(deleteBook(id));
-        alert('Book deleted Successfully');
+        await axios.delete(
+          `http://localhost:8080/students/${studentId}/books/${id}`
+        );
+        dispatch(deleteBook(id));
+        alert("Book deleted Successfully");
       } catch (error) {
         console.log(error);
       }
@@ -69,13 +85,17 @@ const BookManager = () => {
 
   return (
     <div>
-      <div style={{ textAlign: 'right' }}>
+      <div style={{ textAlign: "right" }}>
         <Link to="/students" className="btn btn-sm btn-primary">
           Back
         </Link>
       </div>
       <div className="fixed-button-container">
-        <h2>{books.length !== 0 ? `Books of Student whose id is ${studentId}` : 'No Books Available '}</h2>
+        <h2>
+          {books.length !== 0
+            ? `Books of Student whose id is ${studentId}`
+            : "No Books Available "}
+        </h2>
       </div>
       {books.length > 0 && (
         <table className="table table-bordered table-hover">
@@ -97,7 +117,10 @@ const BookManager = () => {
                       type="text"
                       value={editingBook.name}
                       onChange={(eventObj) =>
-                        setEditingBook({ ...editingBook, name: eventObj.target.value })
+                        setEditingBook({
+                          ...editingBook,
+                          name: eventObj.target.value,
+                        })
                       }
                     />
                   </td>
@@ -106,17 +129,30 @@ const BookManager = () => {
                       type="text"
                       value={editingBook.author}
                       onChange={(eventObj) =>
-                        setEditingBook({ ...editingBook, author: eventObj.target.value })
+                        setEditingBook({
+                          ...editingBook,
+                          author: eventObj.target.value,
+                        })
                       }
                     />
                   </td>
 
                   <td>
-                    <button onClick={() => handleUpdateBook(book.id)} className="btn btn-success">
+                    <button
+                      onClick={() => handleUpdateBook(book.id)}
+                      className="btn btn-success"
+                    >
                       Update
                     </button>
                     <button
-                      onClick={() => setEditingBook({ id: '', name: '', author: '', student_id: '' })}
+                      onClick={() =>
+                        setEditingBook({
+                          id: "",
+                          name: "",
+                          author: "",
+                          student_id: "",
+                        })
+                      }
                       className="btn btn-warning"
                     >
                       Back
@@ -129,10 +165,16 @@ const BookManager = () => {
                   <td className="table-success">{book.name}</td>
                   <td className="table-success">{book.author}</td>
                   <td className="table-success">
-                    <button onClick={() => handleEditBook(book)} className="btn btn-secondary">
+                    <button
+                      onClick={() => handleEditBook(book)}
+                      className="btn btn-secondary"
+                    >
                       Edit
                     </button>
-                    <button onClick={() => handleDeleteBook(book.id)} className="btn btn-danger">
+                    <button
+                      onClick={() => handleDeleteBook(book.id)}
+                      className="btn btn-danger"
+                    >
                       Delete
                     </button>
                   </td>
