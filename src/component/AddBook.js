@@ -11,6 +11,12 @@ const AddBook = () => {
   const [book, setBook] = useState({ name: "", author: "" });
   const dispatch = useDispatch();
 
+  const onChangeHandler = (event)=>{
+    let name = event.target.name;
+    let value = event.target.value;
+    setBook({[name]:value})
+  };
+
   const handleAddBook = async () => {
     if (book.name.trim() === "" || book.author.trim() === "") {
       alert("Please fill the data correctly");
@@ -18,7 +24,7 @@ const AddBook = () => {
     }
 
     const newBook = { ...book, student_id: studentId };
-
+    const token = `b49a4d48-3468-4889-af26-96175e3dd7a6`;
     try {
       const response = await axios.post(
         `http://localhost:8080/students/${studentId}/book`,
@@ -26,7 +32,9 @@ const AddBook = () => {
         {
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
           },
+          withCredentials: true, // Moved to the same object
         }
       );
 

@@ -21,7 +21,7 @@ const BookManager = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/students/${studentId}/books`
+        `http://localhost:8080/students/${studentId}/books`, { withCredentials: true }
       );
       dispatch(setBooks(response.data));
     } catch (error) {
@@ -32,6 +32,13 @@ const BookManager = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const onChangeHandler = (event)=>{
+    let name = event.target.name;
+    let value = event.target.value;
+    setEditingBook({[name]:value})
+  };
+
 
   const handleEditBook = (selectedBook) => {
     const book = { ...selectedBook, student_id: studentId };
@@ -54,7 +61,7 @@ const BookManager = () => {
       try {
         const res = await axios.put(
           `http://localhost:8080/students/book/${editingBook.id}`,
-          editingBook
+          editingBook, { withCredentials: true }
         );
         const updatedBook = { ...editingBook };
         dispatch(updateBook(updatedBook));
@@ -73,7 +80,7 @@ const BookManager = () => {
     if (confirmDelete) {
       try {
         await axios.delete(
-          `http://localhost:8080/students/${studentId}/books/${id}`
+          `http://localhost:8080/students/${studentId}/books/${id}`, { withCredentials: true }
         );
         dispatch(deleteBook(id));
         alert("Book deleted Successfully");

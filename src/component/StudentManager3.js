@@ -25,8 +25,9 @@ const StudentManager3 = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/students");
+        const response = await axios.get("http://localhost:8080/students", { withCredentials: true });
         dispatch(setStudents(response.data)); //dispatched to redux store
+        console.log(students);
       } catch (error) {
         console.log(error);
       }
@@ -34,6 +35,12 @@ const StudentManager3 = () => {
 
     fetchData();
   }, []);
+
+  const onChangeHandler = (event)=>{
+    let name = event.target.name;
+    let value = event.target.value;
+    setEditingStudent({[name]:value})
+  };
 
   const handleEditStudent = (selectedStudent) => {
     // Show a confirmation dialog before editing
@@ -58,7 +65,7 @@ const StudentManager3 = () => {
       try {
         const response = await axios.put(
           "http://localhost:8080/students/" + id,
-          editingStudent
+          editingStudent, { withCredentials: true }
         );
         const updatedStudent = { ...editingStudent };
         dispatch(updateStudent(updatedStudent));
@@ -76,7 +83,7 @@ const StudentManager3 = () => {
     );
     if (confirmDelete) {
       try {
-        await axios.delete("http://localhost:8080/students/" + id);
+        await axios.delete("http://localhost:8080/students/" + id, { withCredentials: true });
         dispatch(deleteStudent(id));
         alert("Student deleted Successfully");
       } catch (error) {

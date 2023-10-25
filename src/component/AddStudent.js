@@ -9,6 +9,12 @@ const AddStudent = () => {
   const [student, setStudent] = useState({ name: "", email: "", dob: "" });
   const dispatch = useDispatch();
 
+  const onChangeHandler = (event)=>{
+    let name = event.target.name;
+    let value = event.target.value;
+    setStudent({[name]:value})
+  };
+
   const handleAddStudent = async () => {
     if (
       student.name.trim() === "" ||
@@ -29,6 +35,7 @@ const AddStudent = () => {
           headers: {
             "Content-Type": "application/json",
           },
+          withCredentials: true, 
         }
       );
 
